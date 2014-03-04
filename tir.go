@@ -12,12 +12,17 @@ import (
 	"github.com/ikaros/tir/render"
 )
 
-const usage string = `
-usage: tmg [options] <image>
+const Version string = "0.1.0"
 
-This tool let you render png and jpg in 256 colors on your terminal
+const usageHead string = `
+Usage:
 
-Options:
+  tmg [options] <image>
+
+Description:
+
+  This tool let you render png and jpg in 256 colors on your terminal
+
 `
 
 var (
@@ -27,8 +32,12 @@ var (
 )
 
 func printUsage() {
-	fmt.Fprint(os.Stderr, usage)
+	fmt.Fprint(os.Stderr, usageHead)
+	fmt.Println("\nOptions:\n")
 	flag.PrintDefaults()
+	fmt.Print("\n\n")
+	fmt.Printf("Version:\n\n  %s\n", Version)
+	fmt.Print("\n")
 }
 
 func main() {
