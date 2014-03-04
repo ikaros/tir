@@ -3,6 +3,7 @@ package render
 import (
 	"fmt"
 	"image"
+	"bytes"
 
 	"github.com/ikaros/tir/colors"
 	"github.com/ikaros/tir/offset"
@@ -10,25 +11,30 @@ import (
 
 func Small(img image.Image) {
 
+	var b bytes.Buffer
+
 	bounds := img.Bounds()
 
-	fmt.Print(offset.Y)
+	b.WriteString(offset.Y)
 
 	for y := bounds.Min.Y; y < bounds.Max.Y; y += 2 {
 
-		fmt.Print(offset.X)
+		b.WriteString(offset.X)
 
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
 
-			fmt.Print(fg(colors.XTerm256.Index(img.At(x, y))))
+			fg(colors.XTerm256.Index(img.At(x, y)), &b)
 
 			if y != bounds.Max.Y - 1 {
-				fmt.Print(bg(colors.XTerm256.Index(img.At(x, y+1))))
+				bg(colors.XTerm256.Index(img.At(x, y+1)), &b)
 			}
 
-			fmt.Print("▀")
+			b.WriteString("▀")
 		}
 
-		fmt.Print(colorReset, "\n")
+		b.WriteString(colorReset)
+		b.WriteString("\n")
 	}
+
+	fmt.Print(b.String())
 }

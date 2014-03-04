@@ -1,6 +1,7 @@
 package render
 
 import (
+	"bytes"
 	"fmt"
 	"image"
 
@@ -9,21 +10,24 @@ import (
 )
 
 func Big(img image.Image) {
-	var colorIndex int
+	var b bytes.Buffer
 
 	bounds := img.Bounds()
 
-	fmt.Print(offset.Y)
+	b.WriteString(offset.Y)
 
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 
-		fmt.Print(offset.X)
+		b.WriteString(offset.X)
 
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			colorIndex = colors.XTerm256.Index(img.At(x, y))
-			fmt.Print(bg(colorIndex), "  ")
+			bg(colors.XTerm256.Index(img.At(x, y)), &b)
+			b.WriteString("  ")
 		}
 
-		fmt.Print(colorReset, "\n")
+		b.WriteString(colorReset)
+		b.WriteString("\n")
 	}
+
+	fmt.Print(b.String())
 }
