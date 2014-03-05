@@ -12,7 +12,7 @@ import (
 	"github.com/ikaros/tir/render"
 )
 
-const Version string = "0.2.0"
+const Version string = "0.2.1"
 
 const usageHead string = `
 Usage:
