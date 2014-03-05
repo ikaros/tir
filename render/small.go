@@ -22,14 +22,8 @@ func Small(img image.Image) {
 
 		b.WriteString(offset.X)
 
-		if lastRow(bounds, y) {
-			for x := bounds.Min.X; x < bounds.Max.X; x++ {
-				topPixel(&b, img.At(x, y))
-			}
-		} else {
-			for x := bounds.Min.X; x < bounds.Max.X; x++ {
-				doublePixel(&b, img.At(x, y), img.At(x, y+1))
-			}
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			pixel(&b, img.At(x, y), img.At(x, y+1))
 		}
 
 		b.WriteString(colorReset)
@@ -39,17 +33,7 @@ func Small(img image.Image) {
 	fmt.Print(b.String())
 }
 
-func topPixel(b *bytes.Buffer, c color.Color) {
-	b.WriteString(colorReset)
-
-	if !isTransparent(c) {
-		fg(colors.XTerm256.Index(c), b)
-	}
-
-	b.WriteString(" ")
-}
-
-func doublePixel(b *bytes.Buffer, top color.Color, bottom color.Color) {
+func pixel(b *bytes.Buffer, top color.Color, bottom color.Color) {
 	b.WriteString(colorReset)
 
 	if isTransparent(top) && isTransparent(bottom) {
