@@ -26,9 +26,9 @@ Description:
 `
 
 var (
-	offsetX    int
-	offsetY    int
-	renderFunc string
+	offsetX int
+	offsetY int
+	pSize   string
 )
 
 func printUsage() {
@@ -42,7 +42,7 @@ func printUsage() {
 
 func main() {
 
-	flag.StringVar(&renderFunc, "render", "small", "[small, big]")
+	flag.StringVar(&pSize, "psize", "small", "Pixel Size [small, big]")
 	flag.IntVar(&offsetX, "offsetX", 0, "Offset in chars from left")
 	flag.IntVar(&offsetY, "offsetY", 0, "Offset in lines from top")
 	flag.Parse()
@@ -63,13 +63,15 @@ func main() {
 	m, _, err := image.Decode(reader)
 	handleError(err)
 
-	switch renderFunc {
+	r := render.XTerm256{}
+
+	switch pSize {
 	case "small":
-		render.Small(m)
+		fmt.Println(r.Render(m))
 	case "big":
-		render.Big(m)
+		fmt.Println(r.RenderBig(m))
 	default:
-		fmt.Fprintf(os.Stderr, "Unknown render function: %s\n", renderFunc)
+		fmt.Fprintf(os.Stderr, "Unknown pixel size: %s\n", pSize)
 		os.Exit(1)
 	}
 }
