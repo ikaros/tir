@@ -81,6 +81,7 @@ func (r *XTerm256) Reset() {
 }
 
 func (r *XTerm256) NewLine() {
+	r.Reset()
 	r.B.WriteString("\n")
 }
 
